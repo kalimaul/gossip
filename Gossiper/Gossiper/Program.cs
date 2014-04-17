@@ -10,6 +10,15 @@ namespace Gossiper
     {
         static void Main(string[] args)
         {
+            Network n = new Network();
+            n.CreateNetwork(1000, 1000, 250, 50);
+            n.nodes[0].StartMessage(n);
+
+            while (n.Step())
+            {
+            }
+
+            n.Print();
         }
     }
 }
