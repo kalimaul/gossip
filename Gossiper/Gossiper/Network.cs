@@ -51,10 +51,9 @@ namespace Gossiper
         public void Print()
         {
             int totalRecieved = nodes.Count(o => o.messagesReceived > 0);
-            int isolated = nodes.Count(o => o.neighbors.Count == 0);
             System.Console.WriteLine("Network stats:");
-            System.Console.WriteLine(nodes.Count + " nodes, " + isolated + " isolated");
-            System.Console.WriteLine(totalRecieved + " nodes got the message");
+            System.Console.WriteLine(nodes.Count + " nodes");
+            System.Console.WriteLine(totalRecieved + " nodes got the message (" + (float)totalRecieved / nodes.Count + ")");
         }
 
         public void CreateNetwork(int width, int height, int nodeCoverage, int nodeCount)
@@ -88,6 +87,25 @@ namespace Gossiper
                     }
                 }
             }
+
+            HashSet<Node> reachable = new HashSet<Node>();
+            Stack<Node> toCheck = new Stack<Node>();
+            toCheck.Push(nodes[0]);
+
+            while (toCheck.Count > 0)
+            {
+                Node current = toCheck.Pop();
+                if (!reachable.Contains(current))
+                {
+                    reachable.Add(current);
+                    foreach (Node n in current.neighbors)
+                    {
+                        toCheck.Push(n);
+                    }
+                }
+            }
+
+            nodes.RemoveAll(o => !reachable.Contains(o));
 
 #if false
             for (int i = 0; i < nodes.Count - 1; ++i)

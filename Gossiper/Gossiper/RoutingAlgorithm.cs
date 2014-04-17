@@ -21,4 +21,30 @@ namespace Gossiper
             }
         }
     }
+
+    class Gossip1 : RoutingAlgorithm
+    {
+        public Gossip1(float probability, int minHops)
+        {
+            p = probability;
+            k = minHops;
+        }
+
+        Random random = new Random();
+        float p = 1;
+        int k = 0;
+
+        public void HandleNode(Node current, Node origin, Message message, Network network)
+        {
+            if (message.hops > k && random.NextDouble() > p)
+            {
+                return;
+            }
+
+            foreach (Node neighbor in current.neighbors)
+            {
+                network.Enqueue(message, current, neighbor);
+            }
+        }
+    }
 }
