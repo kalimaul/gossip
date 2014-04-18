@@ -48,12 +48,27 @@ namespace Gossiper
 
         public List<Node> nodes = new List<Node>();
 
+        public int totalRecieved
+        {
+            get
+            {
+                return nodes.Count(o => o.messagesReceived > 0);
+            }
+        }
+
+        public float receivedRatio
+        {
+            get
+            {
+                return (float)totalRecieved / nodes.Count;
+            }
+        }
+
         public void Print()
         {
-            int totalRecieved = nodes.Count(o => o.messagesReceived > 0);
             System.Console.WriteLine("Network stats:");
             System.Console.WriteLine(nodes.Count + " nodes");
-            System.Console.WriteLine(totalRecieved + " nodes got the message (" + (float)totalRecieved / nodes.Count + ")");
+            System.Console.WriteLine(totalRecieved + " nodes got the message (" + receivedRatio + ")");
         }
 
         public void CreateNetwork(int width, int height, int nodeCoverage, int nodeCount)
