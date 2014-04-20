@@ -19,27 +19,42 @@ namespace Gossiper
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Network n = new Network();
-
+            button1.Enabled = false;
             chart1.Series[0].Points.Clear();
             chart1.Series[1].Points.Clear();
-            Refresh();
 
-            for (int i = 0; i <= 100; i += 1)
+            int simCount = (int)simulations.Value;
+
+            BackgroundWorker bw = new BackgroundWorker();
+            bw.WorkerReportsProgress = true;
+            bw.DoWork += new DoWorkEventHandler(
+            delegate(object o, DoWorkEventArgs args)
             {
-                float p = (float)i / 100;
-                SetupRoutingAlgorithm(n, p);
-                float ratio, msgRatio;
-                Program.Test(n, 7500, 3000, 250, 1000, 100, out ratio, out msgRatio);
-                chart1.Series[0].Points.AddXY(p, ratio);
-                chart1.Series[1].Points.AddXY(p, msgRatio);
-                Refresh();
-            }
+                Network n = new Network();
+
+                int w = (int)width.Value;
+                int h = (int)height.Value;
+                int nodes = (int)nodeCount.Value;
+                int nodeDistance = (int)nodeDist.Value;
+
+                for (int i = 0; i <= 100; i += 2)
+                {
+                    float p = (float)i / 100;
+                    SetupRoutingAlgorithm(n, p);
+                    float ratio, msgRatio;
+                    Program.Test(n, w, h, nodeDistance, nodes, simCount, out ratio, out msgRatio);
+                    chart1.Series[0].Points.AddXY(p, ratio);
+                    chart1.Series[1].Points.AddXY(p, msgRatio);
+                }
+
+                button1.Enabled = true;
+            });
+            bw.RunWorkerAsync();
         }
 
         void SetupRoutingAlgorithm(Network n, float p)
         {
-            int k = (int) kValue.Value;
+            int k = (int)kValue.Value;
             n.routingAlgorithm = new Gossip1(p, k);
         }
     }
