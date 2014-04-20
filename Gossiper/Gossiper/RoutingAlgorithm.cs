@@ -36,7 +36,7 @@ namespace Gossiper
 
         public void HandleNode(Node current, Node origin, Message message, Network network)
         {
-            if (message.hops > k && random.NextDouble() > p)
+            if (message.hops >= k && random.NextDouble() > p)
             {
                 return;
             }

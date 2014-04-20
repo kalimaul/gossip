@@ -18,17 +18,20 @@ namespace Gossiper
             {
                 float p = (float)i / 100;
                 n.routingAlgorithm = new Gossip1(p, k);
-                System.Console.WriteLine("p = " + p);
-                Test(n, 7500, 3000, 250, 1000, 10);
+                float ratio, msgRatio;
+                Test(n, 7500, 3000, 250, 1000, 5, out ratio, out msgRatio);
+                System.Console.WriteLine("p = " + p + ", div = " + (ratio - msgRatio));
             }
 #else
             new GraphForm().ShowDialog();
 #endif
         }
 
-        public static float Test(Network n, int width, int height, int distance, int nodeCount, int runs)
+        public static void Test(Network n, int width, int height,
+            int distance, int nodeCount, int runs, out float ratio, out float msgRatio)
         {
-            float ratio = 0;
+            ratio = 0;
+            msgRatio = 0;
 
             for (int i = 0; i < runs; ++i)
             {
@@ -36,10 +39,11 @@ namespace Gossiper
                 n.nodes[0].StartMessage(n);
                 while (n.Step()) ;
                 ratio += n.receivedRatio;
+                msgRatio += n.messageCount;
             }
 
             ratio = ratio / runs;
-            return ratio;
+            msgRatio = msgRatio / (runs * n.maxMessageCount);
         }
     }
 }

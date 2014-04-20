@@ -19,19 +19,28 @@ namespace Gossiper
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int k = 3;
             Network n = new Network();
 
             chart1.Series[0].Points.Clear();
+            chart1.Series[1].Points.Clear();
+            Refresh();
 
-            for (int i = 0; i < 100; ++i)
+            for (int i = 0; i <= 100; i += 1)
             {
                 float p = (float)i / 100;
-                n.routingAlgorithm = new Gossip1(p, k);
-                float ratio = Program.Test(n, 7500, 3000, 250, 1000, 50);
+                SetupRoutingAlgorithm(n, p);
+                float ratio, msgRatio;
+                Program.Test(n, 7500, 3000, 250, 1000, 100, out ratio, out msgRatio);
                 chart1.Series[0].Points.AddXY(p, ratio);
+                chart1.Series[1].Points.AddXY(p, msgRatio);
                 Refresh();
             }
+        }
+
+        void SetupRoutingAlgorithm(Network n, float p)
+        {
+            int k = (int) kValue.Value;
+            n.routingAlgorithm = new Gossip1(p, k);
         }
     }
 }

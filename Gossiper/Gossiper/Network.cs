@@ -29,6 +29,7 @@ namespace Gossiper
 
         public bool Step()
         {
+            messageCount += messages.Count;
             List<NetworkMessage> oldMessages = new List<NetworkMessage>(messages);
             messages.Clear();
             foreach (NetworkMessage msg in oldMessages)
@@ -64,79 +65,86 @@ namespace Gossiper
             }
         }
 
+        public float avgDegree
+        {
+            get
+            {
+                return (float)nodes.Average(o => o.neighbors.Count);
+            }
+        }
+
+        public int maxMessageCount
+        {
+            get
+            {
+                return nodes.Sum(o => o.neighbors.Count);
+            }
+        }
+
+        public float messageCount = 0;
+
         public void Print()
         {
             System.Console.WriteLine("Network stats:");
             System.Console.WriteLine(nodes.Count + " nodes");
+            System.Console.WriteLine("avg degree: " + avgDegree);
             System.Console.WriteLine(totalRecieved + " nodes got the message (" + receivedRatio + ")");
         }
 
         public void CreateNetwork(int width, int height, int nodeCoverage, int nodeCount)
         {
+            messageCount = 0;
             nodes.Clear();
             messages.Clear();
 
             Random random = new Random();
 
-            for (int i = 0; i < nodeCount; ++i)
+            while (nodes.Count < nodeCount / 2)
             {
-                int x = random.Next(width);
-                int y = random.Next(height);
-                Node n = new Node();
-                n.xPos = x;
-                n.yPos = y;
-                nodes.Add(n);
-            }
-
-            for (int i = 0; i < nodes.Count; ++i)
-            {
-                for (int j = i + 1; j < nodes.Count; ++j)
+                for (int i = 0; i < nodeCount; ++i)
                 {
-                    int xdiff = nodes[i].xPos - nodes[j].xPos;
-                    int ydiff = nodes[i].yPos - nodes[j].yPos;
-                    int dstSqr = xdiff * xdiff + ydiff * ydiff;
-                    if (dstSqr <= nodeCoverage * nodeCoverage)
+                    int x = random.Next(width);
+                    int y = random.Next(height);
+                    Node n = new Node();
+                    n.xPos = x;
+                    n.yPos = y;
+                    nodes.Add(n);
+                }
+
+                for (int i = 0; i < nodes.Count; ++i)
+                {
+                    for (int j = i + 1; j < nodes.Count; ++j)
                     {
-                        nodes[i].neighbors.Add(nodes[j]);
-                        nodes[j].neighbors.Add(nodes[i]);
+                        int xdiff = nodes[i].xPos - nodes[j].xPos;
+                        int ydiff = nodes[i].yPos - nodes[j].yPos;
+                        int dstSqr = xdiff * xdiff + ydiff * ydiff;
+                        if (dstSqr <= nodeCoverage * nodeCoverage)
+                        {
+                            nodes[i].neighbors.Add(nodes[j]);
+                            nodes[j].neighbors.Add(nodes[i]);
+                        }
                     }
                 }
-            }
 
-            HashSet<Node> reachable = new HashSet<Node>();
-            Stack<Node> toCheck = new Stack<Node>();
-            toCheck.Push(nodes[0]);
+                HashSet<Node> reachable = new HashSet<Node>();
+                Stack<Node> toCheck = new Stack<Node>();
+                toCheck.Push(nodes[0]);
 
-            while (toCheck.Count > 0)
-            {
-                Node current = toCheck.Pop();
-                if (!reachable.Contains(current))
+                while (toCheck.Count > 0)
                 {
-                    reachable.Add(current);
-                    foreach (Node n in current.neighbors)
+                    Node current = toCheck.Pop();
+                    if (!reachable.Contains(current))
                     {
-                        toCheck.Push(n);
+                        reachable.Add(current);
+                        foreach (Node n in current.neighbors)
+                        {
+                            toCheck.Push(n);
+                        }
                     }
                 }
+
+                nodes.RemoveAll(o => !reachable.Contains(o));
             }
-
-            nodes.RemoveAll(o => !reachable.Contains(o));
-
-#if false
-            for (int i = 0; i < nodes.Count - 1; ++i)
-            {
-                if (nodes[i].neighbors.Count == 0)
-                {
-                    nodes[i].neighbors.Add(nodes[nodes.Count - 1]);
-                    nodes[nodes.Count - 1].neighbors.Add(nodes[i]);
-                }
-
-                if (nodes[i].neighbors.Contains(nodes[i]))
-                {
-                    System.Console.WriteLine("warning: self is neighbor");
-                }
-            }
-#endif
         }
     }
 }
