@@ -17,11 +17,44 @@ namespace Gossiper
             InitializeComponent();
         }
 
+        int gossipMode = 0;
+
         private void button1_Click(object sender, EventArgs e)
         {
-            button1.Enabled = false;
-            chart1.Series[0].Points.Clear();
-            chart1.Series[1].Points.Clear();
+            RunSimulation(gossip1Box.Checked, gossip2Box.Checked);
+        }
+
+        void RunSimulation(bool runGossip1, bool runGossip2)
+        {
+            gossip1Button.Enabled = false;
+
+            chart1.Series.Clear();
+            int g1Line = -1;
+            int g2Line = -1;
+            int usage1Line = -1;
+            int usage2Line = -1;
+
+            if (runGossip1)
+            {
+                chart1.Series.Add("Gossip1 reach");
+                g1Line = chart1.Series.Count - 1;
+                chart1.Series[g1Line].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+
+                chart1.Series.Add("Gossip1 usage");
+                usage1Line = chart1.Series.Count - 1;
+                chart1.Series[usage1Line].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Column;
+            }
+
+            if (runGossip2)
+            {
+                chart1.Series.Add("Gossip2 reach");
+                g2Line = chart1.Series.Count - 1;
+                chart1.Series[g2Line].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+
+                chart1.Series.Add("Gossip2 usage");
+                usage2Line = chart1.Series.Count - 1;
+                chart1.Series[usage2Line].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Column;
+            }
 
             int simCount = (int)simulations.Value;
 
@@ -40,22 +73,46 @@ namespace Gossiper
                 for (int i = 0; i <= 100; i += 2)
                 {
                     float p = (float)i / 100;
-                    SetupRoutingAlgorithm(n, p);
                     float ratio, msgRatio;
-                    Program.Test(n, w, h, nodeDistance, nodes, simCount, out ratio, out msgRatio);
-                    chart1.Series[0].Points.AddXY(p, ratio);
-                    chart1.Series[1].Points.AddXY(p, msgRatio);
+
+                    if (runGossip1)
+                    {
+                        gossipMode = 0;
+                        SetupRoutingAlgorithm(n, p);
+                        Program.Test(n, w, h, nodeDistance, nodes, simCount, out ratio, out msgRatio);
+                        chart1.Series[g1Line].Points.AddXY(p, ratio);
+                        chart1.Series[usage1Line].Points.AddXY(p, msgRatio);
+                    }
+
+                    if (runGossip2)
+                    {
+                        gossipMode = 1;
+                        SetupRoutingAlgorithm(n, p);
+                        Program.Test(n, w, h, nodeDistance, nodes, simCount, out ratio, out msgRatio);
+                        chart1.Series[g2Line].Points.AddXY(p, ratio);
+                        chart1.Series[usage2Line].Points.AddXY(p, msgRatio);
+                    }
                 }
 
-                button1.Enabled = true;
+                gossip1Button.Enabled = true;
             });
             bw.RunWorkerAsync();
         }
 
-        void SetupRoutingAlgorithm(Network n, float p)
+        void SetupRoutingAlgorithm(Network network, float p)
         {
             int k = (int)kValue.Value;
-            n.routingAlgorithm = new Gossip1(p, k);
+            int n = (int)this.n.Value;
+            float p2 = (float)this.p2.Value;
+
+            if (gossipMode == 0)
+            {
+                network.routingAlgorithm = new Gossip1(p, k);
+            }
+            else if (gossipMode == 1)
+            {
+                network.routingAlgorithm = new Gossip2(p, k, p2, n);
+            }
         }
     }
 }

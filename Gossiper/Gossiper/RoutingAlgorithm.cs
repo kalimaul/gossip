@@ -47,4 +47,39 @@ namespace Gossiper
             }
         }
     }
+
+    class Gossip2 : RoutingAlgorithm
+    {
+        public Gossip2(float p1, int k, float p2, int n)
+        {
+            this.p1 = p1;
+            this.k = k;
+            this.p2 = p2;
+            this.n = n;
+        }
+
+        Random random = new Random();
+        float p1, p2;
+        int n;
+        int k;
+
+        public void HandleNode(Node current, Node origin, Message message, Network network)
+        {
+            float p = p1;
+            if (current.neighbors.Count < n)
+            {
+                p = p2;
+            }
+
+            if (message.hops >= k && random.NextDouble() > p)
+            {
+                return;
+            }
+
+            foreach (Node neighbor in current.neighbors)
+            {
+                network.Enqueue(message, current, neighbor);
+            }
+        }
+    }
 }
