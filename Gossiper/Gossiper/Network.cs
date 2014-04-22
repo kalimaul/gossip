@@ -27,8 +27,11 @@ namespace Gossiper
             messages.Add(msg);
         }
 
+        public int time = 0;
+
         public bool Step()
         {
+            ++time;
             messageCount += messages.Count;
             List<NetworkMessage> oldMessages = new List<NetworkMessage>(messages);
             messages.Clear();
@@ -37,10 +40,7 @@ namespace Gossiper
                 msg.target.OnMessage(msg.origin, msg.message, this);
             }
 
-            if (messages.Count == 0)
-            {
-                routingAlgorithm.OnTimeout(this);
-            }
+            routingAlgorithm.OnTimeStep(this);
 
             if (messages.Count == 0)
             {
@@ -86,7 +86,7 @@ namespace Gossiper
             }
         }
 
-        public float messageCount = 0;
+        public int messageCount = 0;
 
         public void Print()
         {
@@ -98,6 +98,7 @@ namespace Gossiper
 
         public void CreateNetwork(int width, int height, int nodeCoverage, int nodeCount)
         {
+            time = 0;
             messageCount = 0;
             nodes.Clear();
             messages.Clear();

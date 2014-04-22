@@ -145,6 +145,7 @@ namespace Gossiper
             int n = (int)this.n.Value;
             float p2 = (float)this.p2.Value;
             int m = (int)this.m.Value;
+            int timeout = (int)this.timeout.Value;
 
             if (gossipMode == 0)
             {
@@ -156,7 +157,7 @@ namespace Gossiper
             }
             else if (gossipMode == 2)
             {
-                network.routingAlgorithm = new Gossip3(p, k, m);
+                network.routingAlgorithm = new Gossip3(p, k, m, timeout);
             }
         }
     }

@@ -9,7 +9,7 @@ namespace Gossiper
     interface RoutingAlgorithm
     {
         void HandleNode(Node current, Node origin, Message message, Network network);
-        void OnTimeout(Network network);
+        void OnTimeStep(Network network);
     }
 
     class DumbFloodFill : RoutingAlgorithm
@@ -23,7 +23,7 @@ namespace Gossiper
         }
 
 
-        public void OnTimeout(Network network)
+        public void OnTimeStep(Network network)
         {
         }
     }
@@ -53,7 +53,7 @@ namespace Gossiper
             }
         }
 
-        public void OnTimeout(Network network)
+        public void OnTimeStep(Network network)
         {
         }
     }
@@ -92,24 +92,27 @@ namespace Gossiper
             }
         }
 
-        public void OnTimeout(Network network)
+        public void OnTimeStep(Network network)
         {
         }
     }
 
     class Gossip3 : RoutingAlgorithm
     {
-        public Gossip3(float p, int k, int m)
+        public Gossip3(float p, int k, int m, int timeout)
         {
             this.p = p;
             this.k = k;
             this.m = m;
+            this.timeout = timeout;
         }
 
         Random random = new Random();
         float p = 1;
         int k = 0;
         int m;
+
+        int timeout;
 
         public void HandleNode(Node current, Node origin, Message message, Network network)
         {
@@ -126,11 +129,12 @@ namespace Gossiper
             }
         }
 
-        public void OnTimeout(Network network)
+        public void OnTimeStep(Network network)
         {
             foreach (Node node in network.nodes)
             {
-                if (node.broadcasted == false && node.messagesReceived <= m && node.messagesReceived > 0)
+                if (node.broadcasted == false && node.messagesReceived <= m &&
+                    node.messagesReceived > 0 && node.rcvTime + timeout < network.time)
                 {
                     node.broadcasted = true;
                     foreach (Node neighbor in node.neighbors)

@@ -13,6 +13,7 @@ namespace Gossiper
             ++messagesReceived;
             if (messagesReceived == 1)
             {
+                rcvTime = network.time;
                 this.message = message;
                 network.routingAlgorithm.HandleNode(this, origin, message, network);
             }
@@ -24,6 +25,7 @@ namespace Gossiper
             network.routingAlgorithm.HandleNode(this, null, m, network);
         }
 
+        public int rcvTime = 0;
         public bool broadcasted = false;
         public Message message = new Message();
         public int messagesReceived = 0;

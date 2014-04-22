@@ -54,6 +54,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.gossip3Box = new System.Windows.Forms.CheckBox();
             this.usageBox = new System.Windows.Forms.CheckBox();
+            this.timeout = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.k)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.height)).BeginInit();
@@ -64,6 +66,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.n)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.p2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timeout)).BeginInit();
             this.SuspendLayout();
             // 
             // chart1
@@ -99,10 +102,10 @@
             this.gossip1Button.UseVisualStyleBackColor = true;
             this.gossip1Button.Click += new System.EventHandler(this.button1_Click);
             // 
-            // kValue
+            // k
             // 
             this.k.Location = new System.Drawing.Point(1112, 226);
-            this.k.Name = "kValue";
+            this.k.Name = "k";
             this.k.Size = new System.Drawing.Size(57, 22);
             this.k.TabIndex = 2;
             this.k.Value = new decimal(new int[] {
@@ -308,7 +311,7 @@
             this.gossip1Box.AutoSize = true;
             this.gossip1Box.Checked = true;
             this.gossip1Box.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gossip1Box.Location = new System.Drawing.Point(1031, 357);
+            this.gossip1Box.Location = new System.Drawing.Point(1029, 374);
             this.gossip1Box.Name = "gossip1Box";
             this.gossip1Box.Size = new System.Drawing.Size(115, 21);
             this.gossip1Box.TabIndex = 18;
@@ -318,7 +321,7 @@
             // gossip2Box
             // 
             this.gossip2Box.AutoSize = true;
-            this.gossip2Box.Location = new System.Drawing.Point(1031, 384);
+            this.gossip2Box.Location = new System.Drawing.Point(1029, 401);
             this.gossip2Box.Name = "gossip2Box";
             this.gossip2Box.Size = new System.Drawing.Size(155, 21);
             this.gossip2Box.TabIndex = 19;
@@ -327,7 +330,7 @@
             // 
             // m
             // 
-            this.m.Location = new System.Drawing.Point(1113, 329);
+            this.m.Location = new System.Drawing.Point(1113, 317);
             this.m.Name = "m";
             this.m.Size = new System.Drawing.Size(57, 22);
             this.m.TabIndex = 20;
@@ -340,7 +343,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(1048, 329);
+            this.label9.Location = new System.Drawing.Point(1048, 317);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(19, 17);
             this.label9.TabIndex = 21;
@@ -349,11 +352,11 @@
             // gossip3Box
             // 
             this.gossip3Box.AutoSize = true;
-            this.gossip3Box.Location = new System.Drawing.Point(1031, 411);
+            this.gossip3Box.Location = new System.Drawing.Point(1029, 428);
             this.gossip3Box.Name = "gossip3Box";
-            this.gossip3Box.Size = new System.Drawing.Size(134, 21);
+            this.gossip3Box.Size = new System.Drawing.Size(146, 21);
             this.gossip3Box.TabIndex = 22;
-            this.gossip3Box.Text = "Gossip3(p, k, m)";
+            this.gossip3Box.Text = "Gossip3(p, k, m, t)";
             this.gossip3Box.UseVisualStyleBackColor = true;
             // 
             // usageBox
@@ -366,11 +369,34 @@
             this.usageBox.Text = "Network usage";
             this.usageBox.UseVisualStyleBackColor = true;
             // 
+            // timeout
+            // 
+            this.timeout.Location = new System.Drawing.Point(1113, 345);
+            this.timeout.Name = "timeout";
+            this.timeout.Size = new System.Drawing.Size(57, 22);
+            this.timeout.TabIndex = 24;
+            this.timeout.Value = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(1048, 345);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(54, 17);
+            this.label10.TabIndex = 25;
+            this.label10.Text = "timeout";
+            // 
             // GraphForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1204, 559);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.timeout);
             this.Controls.Add(this.usageBox);
             this.Controls.Add(this.gossip3Box);
             this.Controls.Add(this.label9);
@@ -407,6 +433,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.n)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.p2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.m)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timeout)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -438,5 +465,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox gossip3Box;
         private System.Windows.Forms.CheckBox usageBox;
+        private System.Windows.Forms.NumericUpDown timeout;
+        private System.Windows.Forms.Label label10;
     }
 }
