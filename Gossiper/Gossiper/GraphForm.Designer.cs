@@ -32,7 +32,7 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.gossip1Button = new System.Windows.Forms.Button();
-            this.kValue = new System.Windows.Forms.NumericUpDown();
+            this.k = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.height = new System.Windows.Forms.NumericUpDown();
             this.nodeDist = new System.Windows.Forms.NumericUpDown();
@@ -50,8 +50,12 @@
             this.label8 = new System.Windows.Forms.Label();
             this.gossip1Box = new System.Windows.Forms.CheckBox();
             this.gossip2Box = new System.Windows.Forms.CheckBox();
+            this.m = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.gossip3Box = new System.Windows.Forms.CheckBox();
+            this.usageBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.kValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.k)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.height)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nodeDist)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nodeCount)).BeginInit();
@@ -59,6 +63,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.simulations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.n)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.p2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m)).BeginInit();
             this.SuspendLayout();
             // 
             // chart1
@@ -86,7 +91,7 @@
             // 
             // gossip1Button
             // 
-            this.gossip1Button.Location = new System.Drawing.Point(995, 441);
+            this.gossip1Button.Location = new System.Drawing.Point(992, 498);
             this.gossip1Button.Name = "gossip1Button";
             this.gossip1Button.Size = new System.Drawing.Size(178, 49);
             this.gossip1Button.TabIndex = 1;
@@ -96,11 +101,11 @@
             // 
             // kValue
             // 
-            this.kValue.Location = new System.Drawing.Point(1112, 228);
-            this.kValue.Name = "kValue";
-            this.kValue.Size = new System.Drawing.Size(57, 22);
-            this.kValue.TabIndex = 2;
-            this.kValue.Value = new decimal(new int[] {
+            this.k.Location = new System.Drawing.Point(1112, 226);
+            this.k.Name = "kValue";
+            this.k.Size = new System.Drawing.Size(57, 22);
+            this.k.TabIndex = 2;
+            this.k.Value = new decimal(new int[] {
             4,
             0,
             0,
@@ -303,7 +308,7 @@
             this.gossip1Box.AutoSize = true;
             this.gossip1Box.Checked = true;
             this.gossip1Box.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gossip1Box.Location = new System.Drawing.Point(1031, 358);
+            this.gossip1Box.Location = new System.Drawing.Point(1031, 357);
             this.gossip1Box.Name = "gossip1Box";
             this.gossip1Box.Size = new System.Drawing.Size(115, 21);
             this.gossip1Box.TabIndex = 18;
@@ -313,20 +318,63 @@
             // gossip2Box
             // 
             this.gossip2Box.AutoSize = true;
-            this.gossip2Box.Checked = true;
-            this.gossip2Box.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gossip2Box.Location = new System.Drawing.Point(1031, 385);
+            this.gossip2Box.Location = new System.Drawing.Point(1031, 384);
             this.gossip2Box.Name = "gossip2Box";
             this.gossip2Box.Size = new System.Drawing.Size(155, 21);
             this.gossip2Box.TabIndex = 19;
             this.gossip2Box.Text = "Gossip2(p, k, p2, n)";
             this.gossip2Box.UseVisualStyleBackColor = true;
             // 
+            // m
+            // 
+            this.m.Location = new System.Drawing.Point(1113, 329);
+            this.m.Name = "m";
+            this.m.Size = new System.Drawing.Size(57, 22);
+            this.m.TabIndex = 20;
+            this.m.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(1048, 329);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(19, 17);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "m";
+            // 
+            // gossip3Box
+            // 
+            this.gossip3Box.AutoSize = true;
+            this.gossip3Box.Location = new System.Drawing.Point(1031, 411);
+            this.gossip3Box.Name = "gossip3Box";
+            this.gossip3Box.Size = new System.Drawing.Size(134, 21);
+            this.gossip3Box.TabIndex = 22;
+            this.gossip3Box.Text = "Gossip3(p, k, m)";
+            this.gossip3Box.UseVisualStyleBackColor = true;
+            // 
+            // usageBox
+            // 
+            this.usageBox.AutoSize = true;
+            this.usageBox.Location = new System.Drawing.Point(1020, 471);
+            this.usageBox.Name = "usageBox";
+            this.usageBox.Size = new System.Drawing.Size(124, 21);
+            this.usageBox.TabIndex = 23;
+            this.usageBox.Text = "Network usage";
+            this.usageBox.UseVisualStyleBackColor = true;
+            // 
             // GraphForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1204, 559);
+            this.Controls.Add(this.usageBox);
+            this.Controls.Add(this.gossip3Box);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.m);
             this.Controls.Add(this.gossip2Box);
             this.Controls.Add(this.gossip1Box);
             this.Controls.Add(this.label8);
@@ -344,13 +392,13 @@
             this.Controls.Add(this.nodeDist);
             this.Controls.Add(this.height);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.kValue);
+            this.Controls.Add(this.k);
             this.Controls.Add(this.gossip1Button);
             this.Controls.Add(this.chart1);
             this.Name = "GraphForm";
             this.Text = "GraphForm";
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.kValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.k)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.height)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nodeDist)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nodeCount)).EndInit();
@@ -358,6 +406,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.simulations)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.n)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.p2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -367,7 +416,7 @@
 
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Button gossip1Button;
-        private System.Windows.Forms.NumericUpDown kValue;
+        private System.Windows.Forms.NumericUpDown k;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown height;
         private System.Windows.Forms.NumericUpDown nodeDist;
@@ -385,5 +434,9 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox gossip1Box;
         private System.Windows.Forms.CheckBox gossip2Box;
+        private System.Windows.Forms.NumericUpDown m;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.CheckBox gossip3Box;
+        private System.Windows.Forms.CheckBox usageBox;
     }
 }

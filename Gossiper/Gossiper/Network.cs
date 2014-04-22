@@ -39,6 +39,11 @@ namespace Gossiper
 
             if (messages.Count == 0)
             {
+                routingAlgorithm.OnTimeout(this);
+            }
+
+            if (messages.Count == 0)
+            {
                 return false;
             }
 

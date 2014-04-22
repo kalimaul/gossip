@@ -9,6 +9,7 @@ namespace Gossiper
     interface RoutingAlgorithm
     {
         void HandleNode(Node current, Node origin, Message message, Network network);
+        void OnTimeout(Network network);
     }
 
     class DumbFloodFill : RoutingAlgorithm
@@ -19,6 +20,11 @@ namespace Gossiper
             {
                 network.Enqueue(message, current, neighbor);
             }
+        }
+
+
+        public void OnTimeout(Network network)
+        {
         }
     }
 
@@ -45,6 +51,10 @@ namespace Gossiper
             {
                 network.Enqueue(message, current, neighbor);
             }
+        }
+
+        public void OnTimeout(Network network)
+        {
         }
     }
 
@@ -79,6 +89,55 @@ namespace Gossiper
             foreach (Node neighbor in current.neighbors)
             {
                 network.Enqueue(message, current, neighbor);
+            }
+        }
+
+        public void OnTimeout(Network network)
+        {
+        }
+    }
+
+    class Gossip3 : RoutingAlgorithm
+    {
+        public Gossip3(float p, int k, int m)
+        {
+            this.p = p;
+            this.k = k;
+            this.m = m;
+        }
+
+        Random random = new Random();
+        float p = 1;
+        int k = 0;
+        int m;
+
+        public void HandleNode(Node current, Node origin, Message message, Network network)
+        {
+            if (message.hops >= k && random.NextDouble() > p)
+            {
+                return;
+            }
+
+            current.broadcasted = true;
+
+            foreach (Node neighbor in current.neighbors)
+            {
+                network.Enqueue(message, current, neighbor);
+            }
+        }
+
+        public void OnTimeout(Network network)
+        {
+            foreach (Node node in network.nodes)
+            {
+                if (node.broadcasted == false && node.messagesReceived <= m && node.messagesReceived > 0)
+                {
+                    node.broadcasted = true;
+                    foreach (Node neighbor in node.neighbors)
+                    {
+                        network.Enqueue(node.message, node, neighbor);
+                    }
+                }
             }
         }
     }

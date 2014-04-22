@@ -13,6 +13,7 @@ namespace Gossiper
             ++messagesReceived;
             if (messagesReceived == 1)
             {
+                this.message = message;
                 network.routingAlgorithm.HandleNode(this, origin, message, network);
             }
         }
@@ -23,6 +24,8 @@ namespace Gossiper
             network.routingAlgorithm.HandleNode(this, null, m, network);
         }
 
+        public bool broadcasted = false;
+        public Message message = new Message();
         public int messagesReceived = 0;
         public List<Node> neighbors = new List<Node>();
         public int xPos;
